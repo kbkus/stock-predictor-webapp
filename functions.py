@@ -16,7 +16,7 @@ import yfinance as yf
 from config import save_path
 
 
-def scrape_finviz(companies):
+def scrape_finviz(companies, status=False):
     """A function to scrape the finviz website.
     
     It will return the information as a data frame with columns for:
@@ -27,12 +27,14 @@ def scrape_finviz(companies):
     # url for the news website
     finwiz_url = 'https://finviz.com/quote.ashx?t='
     
-    print('{} companies to gather data for'.format(len(companies)))
+    if status == True:
+        print('{} companies to gather data for'.format(len(companies)))
     count = 1
     
     # loop through each company you want to store data for
     for company in companies:
-        print(count)
+        if status == True:
+            print(count)
         try:
             url = finwiz_url + company
             response = requests.get(url, headers={'user-agent': 'my-app/0.0.1'})
@@ -43,7 +45,8 @@ def scrape_finviz(companies):
             news_tables[company] = news_table
             count+=1
         except:
-            print('error with {}'.format(company))
+            if status == True:
+                print('error with {}'.format(company))
             count +=1
             continue
         
@@ -111,7 +114,7 @@ def get_stock_prices(parsed_news):
     
     for i in range(len(parsed_news)):        
         if count % 300 == 0:
-            parsed_news.to_csv(r'/Users/kacikus/Dropbox/Thinkful_Data_Science_Projects/Capstone2/example_save.csv')
+            parsed_news.to_csv(save_path + 'example_save.csv')
             print('saved')
                 
         if parsed_news['30d'][i] != '':
