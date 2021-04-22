@@ -21,7 +21,6 @@ if __name__ == '__main__':
         st.write(f'{company} headlines scraped from finviz')
         st.write(df[['company','headline','date']])
         line_chart = st.line_chart(df[['datetime', 'open_price', 'close']].set_index('datetime'))
-        line_chart.set_title(f'{company} Opening price')
         
         
         # work on date range slider
