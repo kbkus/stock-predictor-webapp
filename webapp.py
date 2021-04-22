@@ -20,6 +20,7 @@ if __name__ == '__main__':
         df = get_data([company])
         st.write(f'{company} headlines scraped from finviz')
         st.write(df[['company','headline','date']])
+        st.write('Open and close price chart')
         line_chart = st.line_chart(df[['datetime', 'open_price', 'close']].set_index('datetime'))
         
         
