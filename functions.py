@@ -112,9 +112,10 @@ def get_stock_prices(parsed_news):
     to_drop = []
     count = 1
     
+    # every 300 new data entries, save
     for i in range(len(parsed_news)):        
         if count % 300 == 0:
-            parsed_news.to_csv(save_path + 'example_save.csv')
+            parsed_news.to_csv(save_path + 'checkpoint.csv')
             print('saved')
                 
         if parsed_news['30d'][i] != '':
@@ -242,17 +243,14 @@ def update_database(new_data, save = False):
     Takes in a dataframe, data, to be appended to the master file.
     """
     # load previously saved spreadsheet
-    prev_data = pd.read_csv(r'/Users/kacikus/Dropbox/Thinkful_Data_Science_Projects/Capstone2/company_data.csv', index_col = 0)
+    prev_data = pd.read_csv(f'{save_path}company_data.csv', index_col = 0)
     
     # concatenate with the new data and drop duplicates
     data = pd.concat([prev_data,new_data]).drop_duplicates(subset='headline').reset_index(drop=True)
 
     # overwrite previous file
     if save == True:
-        header = ['company', 'date', 'time', 'headline', '30d', '7d', 'prc_30d', 'prc_7d',
-                  'std_30d', 'std_7d', 'open_price', 'high', 'low', 'close', 'volume',
-                  'neg', 'neu', 'pos', 'compound']
-        data.to_csv(save_path + 'company_data.csv', header = header)
+        data.to_csv(f'{save_path}company_data.csv')
     
     return data
 
